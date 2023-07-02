@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bootstrap Cases</title>
+  <style>
+    .case-title a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .case-title a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Bootstrap Cases</h1>
+  </header>
+  <main>
+    <ul id="cases">
+    </ul>
+  </main>
+  <footer>
+  </footer>
+  <script>
+    fetch("https://api.github.com/repos/coycs/bootstrap-cases/issues")
+      .then(response => response.json())
+      .then(cases => {
+        // 筛选指定用户
+        cases = cases.filter(value => [94168170].includes(value.user.id));
+        // 构造dom数组
+        const cases_html = cases.map(value => {
+          return `<li class="case">
+            <h2 class="case-title">
+              <a href="${value.body}"
+                target="_blank">
+                ${value.title}
+              </a>
+            </h2>
+          </li>`;
+        });
+        // 插入dom
+        document.getElementById("cases").innerHTML = cases_html.join("");
+      }).catch(err => {
+        // 插入dom
+        document.getElementById("cases").innerHTML = err;
+      });
+  </script>
+</body>
+
+</html>
